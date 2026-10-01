@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Венская кофейня & Сомелье Франц</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-cream: #fbf8f4;
+      --surface-white: #ffffff;
+      --card-bg: #f4ece4;
+      --text-main: #231b17;
+      --text-muted: #726258;
+      --accent: #b87333;
+      --accent-hover: #9c5c24;
+      --dark-coffee: #1a120e;
+      --border-subtle: #e8ded4;
+      --shadow-sm: 0 4px 14px rgba(26, 18, 14, 0.05);
+      --shadow-lg: 0 16px 36px rgba(26, 18, 14, 0.12);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--dark-coffee);
+      color: var(--bg-cream);
+      padding: 1.8rem 1.5rem 1.4rem;
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f7ede2;
+      margin-bottom: 0.25rem;
+    }
+
+    .brand-sub {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    main {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.2rem;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 1.8rem;
+      flex: 1;
+    }
+
+    .interactive-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--dark-coffee);
+      margin-bottom: 0.3rem;
+    }
+
+    .section-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Интерактивные карточки пейринга */
+    .pairing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .pairing-card {
+      background: var(--surface-white);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pairing-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+
+    .card-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-name {
+      font-weight: 600;
+      font-size: 0.98rem;
+      color: var(--dark-coffee);
+      margin-bottom: 0.35rem;
+    }
+
+    .card-recommendation {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .card-action {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Быстрые теги вопросов */
+    .quick-prompts {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+    }
+
+    .prompt-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 0.75rem;
+    }
+
+    .prompt-chip {
+      background: var(--surface-white);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 0.45rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .prompt-chip:hover {
+      background: var(--dark-coffee);
+      color: #ffffff;
+      border-color: var(--dark-coffee);
+    }
+
+    /* Контейнер виджета бота */
+    .bot-panel {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 170px);
+      min-height: 620px;
+      background: var(--surface-white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .bot-header {
+      background: var(--dark-coffee);
+      color: #ffffff;
+      padding: 0.85rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .bot-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .bot-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      border: 2px solid #ffffff25;
+    }
+
+    .bot-meta h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .bot-meta span {
+      font-size: 0.76rem;
+      color: #dac7b9;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #4cd964;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .iframe-wrapper {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #fff;
+    }
+
+    .iframe-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Всплывающее уведомление */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(26, 18, 14, 0.92);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      padding: 0.75rem 1.3rem;
+      border-radius: 25px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--accent);
+      transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.28s;
+      opacity: 0;
+      z-index: 9999;
+      pointer-events: none;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      background: var(--bg-cream);
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 1rem 0.8rem;
+      }
+
+      .bot-panel {
+        height: 600px;
+        min-height: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">Café & Confiserie</div>
+    <div class="brand-sub">Австрийская кофейная традиция & Авторский фудпейринг</div>
+  </header>
+
+  <main>
+    <!-- Левая колонка: интерактивный выбор и меню сценариев -->
+    <section class="interactive-panel">
+      <div>
+        <h2 class="section-title">Гастрономические дуэты</h2>
+        <p class="section-desc">Нажмите на карточку, чтобы скопировать вопрос для Франца</p>
+      </div>
+
+      <div class="pairing-grid">
+        <div class="pairing-card" onclick="askPairing('Двойной эспрессо (220 ₽)', 'Торт Захер (400 ₽)')">
+          <div>
+            <div class="card-tag">Классика Вены</div>
+            <div class="card-name">Двойной эспрессо</div>
+            <div class="card-recommendation">+ Торт Захер или Баскский чизкейк</div>
+          </div>
+          <div class="card-action">Спросить о сочетании &rarr;</div>
+        </div>
+
+        <div class="pairing-card" onclick="askPairing('Флэт Уайт (360 ₽)', 'Тарт Апельсин-лимон (360 ₽)')">
+          <div>
+            <div class="card-tag">Баланс кислинки</div>
+            <div class="card-name">Флэт Уайт</div>
+            <div class="card-recommendation">+ Цитрусовый тарт или Павлова</div>
+          </div>
+          <div class="card-action">Спросить о сочетании &rarr;</div>
+        </div>
+
+        <div class="pairing-card" onclick="askPairing('Вафля с лососем (650 ₽)', 'Эспрессо-тоник Эстрагон (360 ₽)')">
+          <div>
+            <div class="card-tag">Сытный ланч</div>
+            <div class="card-name">Вафля с лососем</div>
+            <div class="card-recommendation">+ Цитрус-микс или Тоник Эстрагон</div>
+          </div>
+          <div class="card-action">Спросить о сочетании &rarr;</div>
+        </div>
+
+        <div class="pairing-card" onclick="askPairing('Сезон Лето-26', 'Венский кофе Персик в шоколаде (360 ₽)')">
+          <div>
+            <div class="card-tag">Освежиться</div>
+            <div class="card-name">Летние новинки</div>
+            <div class="card-recommendation">+ Десерт Юдзу-лайм или Булочка с малиной</div>
+          </div>
+          <div class="card-action">Спросить о сочетании &rarr;</div>
+        </div>
+      </div>
+
+      <div class="quick-prompts">
+        <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--dark-coffee);">Быстрые сценарии для заказа</h3>
+        <div class="prompt-buttons">
+          <button class="prompt-chip" onclick="copyPrompt('Франц, что посоветуешь на сытный завтрак до 14:00?')">🍳 Завтрак до 14:00</button>
+          <button class="prompt-chip" onclick="copyPrompt('Франц, в чем разница между Кортадо и Кон Панна?')">☕ Кортадо или Кон Панна?</button>
+          <button class="prompt-chip" onclick="copyPrompt('Франц, посоветуй легкий десерт без лишней сладости.')">🍰 Десерт без приторности</button>
+          <button class="prompt-chip" onclick="copyPrompt('Франц, какие холодные напитки есть в сезоне Лето-26?')">☀️ Сезон Лето-26</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Правая колонка: Pro-Talk виджет с Францем -->
+    <section class="bot-panel">
+      <div class="bot-header">
+        <div class="bot-profile">
+          <div class="bot-avatar">☕</div>
+          <div class="bot-meta">
+            <h3>Франц</h3>
+            <span><i class="status-dot"></i> Бариста-сомелье онлайн</span>
+          </div>
+        </div>
+      </div>
+      <div class="iframe-wrapper">
+        <iframe 
+          id="botIframe"
+          allow="microphone;autoplay" 
+          style="width:100%;height:100%!important;" 
+          src="https://functions.pro-talk.ru/api/v1.0/chatgpt_widget_dialog_api?record_id=rechhS9pd791Fgv83&promt_id=73785&lang=ru&fullscreen=0&voice=1&prod=1&file=1"
+          title="Франц — Гастрономический гид">
+        </iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Завтраки ежедневно до 14:00 • Венские вафли, закуски и авторские десерты весь день
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let toastTimeout;
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    function askPairing(drink, dessert) {
+      const text = `Франц, расскажи, почему ${drink} идеально сочетается с ${dessert}?`;
+      copyAndNotify(text);
+    }
+
+    function copyPrompt(text) {
+      copyAndNotify(text);
+    }
+
+    function copyAndNotify(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(`✨ Вопрос скопирован! Вставьте его в чат Францу.`);
+        }).catch(() => {
+          showToast(`«${text}»`);
+        });
+      } else {
+        showToast(`«${text}»`);
+      }
+    }
+  </script>
+</body>
+</html>
